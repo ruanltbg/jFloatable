@@ -10,10 +10,23 @@
     base = this;
     base.$el = $(el);
     base.el = el;
-    return base.$el.data("jFloatable", base);
+    base.$el.data("jFloatable", base);
+    base.init = function() {
+      var css_fix, target;
+
+      base.options = $.extend({}, $.Jfloatable.defaultOptions, options);
+      target = base.$el;
+      console.log(target);
+      css_fix = {
+        position: "fixed",
+        top: 0
+      };
+      return target.css(css_fix);
+    };
+    return base.init();
   };
 
-  $.jFloatable.defaultOptiomns = {
+  $.Jfloatable.defaultOptions = {
     limit: 0
   };
 

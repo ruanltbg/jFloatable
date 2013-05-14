@@ -17,9 +17,26 @@ $.Jfloatable = (el, options) ->
   base.$el.data("jFloatable", base)
 
 
+  # initializer
+  base.init = ->
+    base.options = $.extend({}, $.Jfloatable.defaultOptions, options);
+
+    target = base.$el
+    console.log target
+
+    #just fix in the top;
+    css_fix =
+      position: "fixed"
+      top: 0
+
+    target.css(css_fix)
+
+  base.init()
+
+
 # the default options
 
-$.jFloatable.defaultOptiomns = 
+$.Jfloatable.defaultOptions = 
   limit: 0
 
 $.fn.jFloatable = (options) ->

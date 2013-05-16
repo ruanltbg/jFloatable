@@ -3,116 +3,54 @@
   <head>
     <title>jFloatable Plugin Demo</title>
     <style type="text/css">
-      div.debugger {
+      .debugger {
         border: 1px solid red;
+      }
+      .blue {
+        border: 1px solid blue;
+      }
+      #top-container {
+        width: 100%;
+        height: 40px;
       }
       #top {
         padding: 10px;
-        width: 100%;
+        width: 98%;
       }
     </style>
   </head>
   <body>
+
+    <div id="top-container" class="blue">
     <div id="top" class="debugger">
       should fix in the top of the window
     </div>
-    text
-    <br />
-    text
-    <br />
-    text
-    <br />
-    text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    <br />text
-    texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />texto
-    <br />
-    <br />text
-    <br />
+    </div>    
+
+    text    <br />    text    <br />    text    <br />    text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text<br />text    <br />text    <br />text    <br />text    <br />text
+
+    <hr />
+
+    <div id="middle" class="debugger">
+      should fix when the page touch here
+    </div>
+
+    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    <br />text    texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto
+    <br />texto    <br />texto    <br />texto    <br />texto    <br />texto    <br />    <br />text    <br />
+
     <br />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
     <script src="jquery.jFloatable.js" type="text/javascript"></script>
+
     <script type="text/javascript">
-      $("#top").jFloatable();
+      $middle = $("#middle")
+      $("#top").jFloatable({
+        limit: $middle.offset().top
+      });
+      $middle.jFloatable({
+        top: 25
+      });
     </script>
   </body>
 </html>

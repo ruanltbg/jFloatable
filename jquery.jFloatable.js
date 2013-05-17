@@ -29,7 +29,8 @@
 
       css = {
         position: 'fixed',
-        top: base.options.top
+        top: base.options.top,
+        left: originalOffset.left
       };
       return target.css(css);
     };

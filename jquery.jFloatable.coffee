@@ -31,6 +31,7 @@ $.Jfloatable = (el, options) ->
     css = 
       position: 'fixed'
       top: base.options.top
+      left: originalOffset.left
     target.css(css)
 
   setAbsolute = (scrollTop)->

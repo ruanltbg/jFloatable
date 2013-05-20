@@ -49,7 +49,7 @@ $.Jfloatable = (el, options) ->
 
 
   windowScroll = ->
-    scrollTop = getScrollTop()
+    scrollTop  = getScrollTop()
     #limit     = getLimit();
 
     if scrollTop >= maxTop
@@ -63,7 +63,16 @@ $.Jfloatable = (el, options) ->
         target.removeClass("jFloatable-fixed").addClass("jFloatable-absolute").removeAttr("style")
         setAbsolute(scrollTop)
     else
-      target.removeClass("jFloatable-fixed").removeClass("jFloatable-absolute").removeAttr("style")
+      setInitialPosition()
+
+  setInitialPosition = ->
+    target.removeClass("jFloatable-fixed").removeClass("jFloatable-absolute").removeAttr("style")
+    originalOffset = target.offset()
+
+  reset = ->
+    console.log "resized"
+    setInitialPosition();
+    windowScroll();
 
 
   # initializer
@@ -75,6 +84,7 @@ $.Jfloatable = (el, options) ->
 
     # fix or unfix the target when the window scrolls
     $(window).bind('scroll.jFloatable', windowScroll);
+    $(window).bind('resize.jFloatable', reset);
 
 
   base.init()

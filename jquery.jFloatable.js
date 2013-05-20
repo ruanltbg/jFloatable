@@ -5,7 +5,7 @@
   };
 
   $.Jfloatable = function(el, options) {
-    var base, getLimit, getScrollTop, maxTop, originalOffset, setAbsolute, setFix, target, targetTop, windowScroll;
+    var base, getLimit, getScrollTop, maxTop, originalOffset, reset, setAbsolute, setFix, setInitialPosition, target, targetTop, windowScroll;
 
     base = this;
     base.$el = $(el);
@@ -63,14 +63,24 @@
           return setAbsolute(scrollTop);
         }
       } else {
-        return target.removeClass("jFloatable-fixed").removeClass("jFloatable-absolute").removeAttr("style");
+        return setInitialPosition();
       }
+    };
+    setInitialPosition = function() {
+      target.removeClass("jFloatable-fixed").removeClass("jFloatable-absolute").removeAttr("style");
+      return originalOffset = target.offset();
+    };
+    reset = function() {
+      console.log("resized");
+      setInitialPosition();
+      return windowScroll();
     };
     base.init = function() {
       base.options = $.extend({}, $.Jfloatable.defaultOptions, options);
       originalOffset = $.extend({}, target.offset());
       maxTop = targetTop();
-      return $(window).bind('scroll.jFloatable', windowScroll);
+      $(window).bind('scroll.jFloatable', windowScroll);
+      return $(window).bind('resize.jFloatable', reset);
     };
     return base.init();
   };

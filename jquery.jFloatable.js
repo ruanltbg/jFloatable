@@ -86,14 +86,12 @@
     turnOn = function(e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log(e);
       base.isActive = true;
       return reset();
     };
     turnOff = function(e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log(e);
       base.isActive = false;
       return setInitialPosition();
     };

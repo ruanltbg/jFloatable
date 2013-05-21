@@ -84,14 +84,14 @@ $.Jfloatable = (el, options) ->
   turnOn = (e) -> 
     e.preventDefault()
     e.stopPropagation()
-    console.log e
+    #console.log e
     base.isActive = true
     reset()
 
   turnOff = (e) ->
     e.preventDefault()
     e.stopPropagation()
-    console.log e
+    #console.log e
     base.isActive = false
     setInitialPosition()
 

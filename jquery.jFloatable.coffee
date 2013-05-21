@@ -19,6 +19,7 @@ $.Jfloatable = (el, options) ->
   target = base.$el
   maxTop = null
   originalOffset = null
+  base.isActive = true
 
 
   getScrollTop = ->
@@ -28,16 +29,21 @@ $.Jfloatable = (el, options) ->
     target.offset().top - parseFloat(target.css('marginTop').replace(/auto/, 0)) - base.options.top
 
   setFix = ()->
-    css = 
+
+    cssBase = 
       position: 'fixed'
       top: base.options.top
       left: originalOffset.left
+
+    css = $.extend({}, cssBase, base.options.fixedCss);
     target.css(css)
 
   setAbsolute = (scrollTop)->
-    css = 
+    cssBase = 
       position: 'absolute'
       top: scrollTop - originalOffset.top
+    css = $.extend({}, cssBase, base.options.absoluteCss);
+
     target.css(css)
 
   getLimit = ->
@@ -49,11 +55,12 @@ $.Jfloatable = (el, options) ->
 
 
   windowScroll = ->
+    return false unless base.isActive
     scrollTop  = getScrollTop()
-    #limit     = getLimit();
+    limit      = getLimit();
 
     if scrollTop >= maxTop
-      if scrollTop < getLimit()
+      if scrollTop < limit 
         # add the fixed class and remove the style created by the scrolling
         # it detach the target from the screen
         target.removeClass("jFloatable-absolute").addClass("jFloatable-fixed").removeAttr("style");
@@ -61,7 +68,7 @@ $.Jfloatable = (el, options) ->
       else if !target.hasClass("jFloatable-absolute")
         # it fix the target in the screen
         target.removeClass("jFloatable-fixed").addClass("jFloatable-absolute").removeAttr("style")
-        setAbsolute(scrollTop)
+        setAbsolute(limit)
     else
       setInitialPosition()
 
@@ -70,9 +77,23 @@ $.Jfloatable = (el, options) ->
     originalOffset = target.offset()
 
   reset = ->
-    console.log "resized"
     setInitialPosition();
-    windowScroll();
+    if target.is(":visible") and base.isActive
+      windowScroll();
+
+  turnOn = (e) -> 
+    e.preventDefault()
+    e.stopPropagation()
+    console.log e
+    base.isActive = true
+    reset()
+
+  turnOff = (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    console.log e
+    base.isActive = false
+    setInitialPosition()
 
 
   # initializer
@@ -85,6 +106,13 @@ $.Jfloatable = (el, options) ->
     # fix or unfix the target when the window scrolls
     $(window).bind('scroll.jFloatable', windowScroll);
     $(window).bind('resize.jFloatable', reset);
+    $(target).bind('resize.jFloatable', windowScroll);
+    
+    $(target).bind('off.jFloatable', turnOff)
+    $(window).bind('off.jFloatable', turnOff)
+
+    $(target).bind('on.jFloatable', turnOn)
+    $(window).bind('on.jFloatable', turnOn)
 
 
   base.init()
@@ -95,6 +123,8 @@ $.Jfloatable = (el, options) ->
 $.Jfloatable.defaultOptions = 
   limit: 0
   top: 0
+  fixedCss: {}
+  absoluteCss: {}
 
 $.fn.jFloatable = (options) ->
   this.each -> 

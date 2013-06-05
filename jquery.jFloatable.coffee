@@ -18,7 +18,10 @@ $.Jfloatable = (el, options) ->
   # properties
   target = base.$el
   maxTop = null
-  originalOffset = null
+  originalData =
+    offset: null
+    style: null
+  
   base.isActive = true
 
 
@@ -33,7 +36,7 @@ $.Jfloatable = (el, options) ->
     cssBase = 
       position: 'fixed'
       top: base.options.top
-      left: originalOffset.left
+      left: originalData.offset.left
 
     css = $.extend({}, cssBase, base.options.fixedCss);
     target.css(css)
@@ -41,7 +44,8 @@ $.Jfloatable = (el, options) ->
   setAbsolute = (scrollTop)->
     cssBase = 
       position: 'absolute'
-      top: scrollTop - originalOffset.top
+      top: scrollTop - originalData.offset.top
+
     css = $.extend({}, cssBase, base.options.absoluteCss);
 
     target.css(css)
@@ -60,11 +64,12 @@ $.Jfloatable = (el, options) ->
     limit      = getLimit();
 
     if scrollTop >= maxTop
-      if scrollTop < limit 
-        # add the fixed class and remove the style created by the scrolling
-        # it detach the target from the screen
-        target.removeClass("jFloatable-absolute").addClass("jFloatable-fixed").removeAttr("style");
-        setFix()
+      if scrollTop < limit
+        if !target.hasClass("jFloatable-fixed") 
+          # add the fixed class and remove the style created by the scrolling
+          # it detach the target from the screen
+          target.removeClass("jFloatable-absolute").addClass("jFloatable-fixed").removeAttr("style");
+          setFix()
       else if !target.hasClass("jFloatable-absolute")
         # it fix the target in the screen
         target.removeClass("jFloatable-fixed").addClass("jFloatable-absolute").removeAttr("style")
@@ -72,9 +77,14 @@ $.Jfloatable = (el, options) ->
     else
       setInitialPosition()
 
+  getInitialPosition = ->
+    originalData.offset = target.offset()
+    originalData.style = target.attr("style")
+
   setInitialPosition = ->
     target.removeClass("jFloatable-fixed").removeClass("jFloatable-absolute").removeAttr("style")
-    originalOffset = target.offset()
+    target.attr("style", originalData.style)
+    originalData.offset = target.offset()
 
   reset = ->
     setInitialPosition();
@@ -100,7 +110,7 @@ $.Jfloatable = (el, options) ->
   base.init = ->
     base.options = $.extend({}, $.Jfloatable.defaultOptions, options);
 
-    originalOffset = $.extend({}, target.offset());
+    getInitialPosition()
     maxTop = targetTop()
 
     # fix or unfix the target when the window scrolls

@@ -5,7 +5,7 @@
   };
 
   $.Jfloatable = function(el, options) {
-    var base, getLimit, getScrollTop, maxTop, originalOffset, reset, setAbsolute, setFix, setInitialPosition, target, targetTop, turnOff, turnOn, windowScroll;
+    var base, getInitialPosition, getLimit, getScrollTop, maxTop, originalData, reset, setAbsolute, setFix, setInitialPosition, target, targetTop, turnOff, turnOn, windowScroll;
 
     base = this;
     base.$el = $(el);
@@ -13,7 +13,10 @@
     base.$el.data("jFloatable", base);
     target = base.$el;
     maxTop = null;
-    originalOffset = null;
+    originalData = {
+      offset: null,
+      style: null
+    };
     base.isActive = true;
     getScrollTop = function() {
       if (window.pageYOffset !== void 0) {
@@ -31,7 +34,7 @@
       cssBase = {
         position: 'fixed',
         top: base.options.top,
-        left: originalOffset.left
+        left: originalData.offset.left
       };
       css = $.extend({}, cssBase, base.options.fixedCss);
       return target.css(css);
@@ -41,7 +44,7 @@
 
       cssBase = {
         position: 'absolute',
-        top: scrollTop - originalOffset.top
+        top: scrollTop - originalData.offset.top
       };
       css = $.extend({}, cssBase, base.options.absoluteCss);
       return target.css(css);
@@ -63,8 +66,10 @@
       limit = getLimit();
       if (scrollTop >= maxTop) {
         if (scrollTop < limit) {
-          target.removeClass("jFloatable-absolute").addClass("jFloatable-fixed").removeAttr("style");
-          return setFix();
+          if (!target.hasClass("jFloatable-fixed")) {
+            target.removeClass("jFloatable-absolute").addClass("jFloatable-fixed").removeAttr("style");
+            return setFix();
+          }
         } else if (!target.hasClass("jFloatable-absolute")) {
           target.removeClass("jFloatable-fixed").addClass("jFloatable-absolute").removeAttr("style");
           return setAbsolute(limit);
@@ -73,9 +78,14 @@
         return setInitialPosition();
       }
     };
+    getInitialPosition = function() {
+      originalData.offset = target.offset();
+      return originalData.style = target.attr("style");
+    };
     setInitialPosition = function() {
       target.removeClass("jFloatable-fixed").removeClass("jFloatable-absolute").removeAttr("style");
-      return originalOffset = target.offset();
+      target.attr("style", originalData.style);
+      return originalData.offset = target.offset();
     };
     reset = function() {
       setInitialPosition();
@@ -97,7 +107,7 @@
     };
     base.init = function() {
       base.options = $.extend({}, $.Jfloatable.defaultOptions, options);
-      originalOffset = $.extend({}, target.offset());
+      getInitialPosition();
       maxTop = targetTop();
       $(window).bind('scroll.jFloatable', windowScroll);
       $(window).bind('resize.jFloatable', reset);

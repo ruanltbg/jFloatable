@@ -113,23 +113,26 @@ $.Jfloatable = (el, options) ->
   # initializer
   base.init = ->
     base.options = $.extend({}, $.Jfloatable.defaultOptions, options);
+    $window = $(window)
 
     getInitialPosition()
     maxTop = targetTop()
 
+
+
     # fix or unfix the target when the window scrolls
-    $(window).bind('scroll.jFloatable', windowScroll)
-    $(window).bind('resize.jFloatable', reset)
-    $(target).bind('resize.jFloatable', windowScroll)
+    $window.bind('scroll.jFloatable', windowScroll)
+    $window.bind('resize.jFloatable', reset)
+    target.bind('resize.jFloatable', windowScroll)
 
-    $(target).bind('reset.jFloatable', reset)
-    $(window).bind('reset.jFloatable', reset)
+    target.bind('reset.jFloatable', reset)
+    $window.bind('reset.jFloatable', reset)
 
-    $(target).bind('off.jFloatable', turnOff)
-    $(window).bind('off.jFloatable', turnOff)
+    target.bind('off.jFloatable', turnOff)
+    $window.bind('off.jFloatable', turnOff)
 
-    $(target).bind('on.jFloatable', turnOn)
-    $(window).bind('on.jFloatable', turnOn)
+    target.bind('on.jFloatable', turnOn)
+    $window.bind('on.jFloatable', turnOn)
 
     windowScroll()
 

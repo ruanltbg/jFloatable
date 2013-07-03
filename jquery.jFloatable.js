@@ -39,12 +39,12 @@
       css = $.extend({}, cssBase, base.options.fixedCss);
       return target.css(css);
     };
-    setAbsolute = function(scrollTop) {
+    setAbsolute = function(limit) {
       var css, cssBase;
 
       cssBase = {
         position: 'absolute',
-        top: scrollTop - originalData.offset.top
+        top: limit - originalData.offset.top
       };
       css = $.extend({}, cssBase, base.options.absoluteCss);
       return target.css(css);
@@ -57,15 +57,15 @@
       }
     };
     windowScroll = function() {
-      var limit, scrollTop;
+      var limit, windowScrollTop;
 
       if (!base.isActive) {
         return false;
       }
-      scrollTop = getScrollTop();
+      windowScrollTop = getScrollTop();
       limit = getLimit();
-      if (scrollTop >= maxTop) {
-        if (scrollTop < limit) {
+      if (windowScrollTop >= maxTop) {
+        if (windowScrollTop < limit) {
           if (!target.hasClass("jFloatable-fixed")) {
             target.removeClass("jFloatable-absolute").addClass("jFloatable-fixed").removeAttr("style");
             return setFix();

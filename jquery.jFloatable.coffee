@@ -41,10 +41,10 @@ $.Jfloatable = (el, options) ->
     css = $.extend({}, cssBase, base.options.fixedCss);
     target.css(css)
 
-  setAbsolute = (scrollTop)->
+  setAbsolute = (limit)->
     cssBase = 
       position: 'absolute'
-      top: scrollTop - originalData.offset.top
+      top: limit - originalData.offset.top
 
     css = $.extend({}, cssBase, base.options.absoluteCss);
 
@@ -59,19 +59,23 @@ $.Jfloatable = (el, options) ->
 
 
   windowScroll = ->
+    # if it is not active should stop
     return false unless base.isActive
-    scrollTop  = getScrollTop()
-    limit      = getLimit();
+    windowScrollTop  = getScrollTop()
+    limit = getLimit();
 
-    if scrollTop >= maxTop
-      if scrollTop < limit
+    # if the scroll passed the original top
+    # maxTop is the targetOriginalTop
+    if windowScrollTop >= maxTop
+
+      if windowScrollTop < limit
         if !target.hasClass("jFloatable-fixed") 
           # add the fixed class and remove the style created by the scrolling
           # it detach the target from the screen
           target.removeClass("jFloatable-absolute").addClass("jFloatable-fixed").removeAttr("style");
           setFix()
       else if !target.hasClass("jFloatable-absolute")
-        # it fix the target in the screen
+        # it reach the limit
         target.removeClass("jFloatable-fixed").addClass("jFloatable-absolute").removeAttr("style")
         setAbsolute(limit)
     else

@@ -115,7 +115,8 @@
       $(target).bind('off.jFloatable', turnOff);
       $(window).bind('off.jFloatable', turnOff);
       $(target).bind('on.jFloatable', turnOn);
-      return $(window).bind('on.jFloatable', turnOn);
+      $(window).bind('on.jFloatable', turnOn);
+      return windowScroll();
     };
     return base.init();
   };

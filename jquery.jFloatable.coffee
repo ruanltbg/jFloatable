@@ -128,6 +128,8 @@ $.Jfloatable = (el, options) ->
     $(target).bind('on.jFloatable', turnOn)
     $(window).bind('on.jFloatable', turnOn)
 
+    windowScroll()
+
 
   base.init()
 

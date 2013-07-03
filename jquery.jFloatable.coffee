@@ -45,7 +45,6 @@ $.Jfloatable = (el, options) ->
     cssBase = 
       position: 'absolute'
       top: limit - originalData.offset.top
-
     css = $.extend({}, cssBase, base.options.absoluteCss);
 
     target.css(css)
@@ -67,7 +66,6 @@ $.Jfloatable = (el, options) ->
     # if the scroll passed the original top
     # maxTop is the targetOriginalTop
     if windowScrollTop >= maxTop
-
       if windowScrollTop < limit
         if !target.hasClass("jFloatable-fixed") 
           # add the fixed class and remove the style created by the scrolling
@@ -115,10 +113,9 @@ $.Jfloatable = (el, options) ->
     base.options = $.extend({}, $.Jfloatable.defaultOptions, options);
     $window = $(window)
 
+
     getInitialPosition()
     maxTop = targetTop()
-
-
 
     # fix or unfix the target when the window scrolls
     $window.bind('scroll.jFloatable', windowScroll)

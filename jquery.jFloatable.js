@@ -112,6 +112,8 @@
       $(window).bind('scroll.jFloatable', windowScroll);
       $(window).bind('resize.jFloatable', reset);
       $(target).bind('resize.jFloatable', windowScroll);
+      $(target).bind('reset.jFloatable', reset);
+      $(window).bind('reset.jFloatable', reset);
       $(target).bind('off.jFloatable', turnOff);
       $(window).bind('off.jFloatable', turnOff);
       $(target).bind('on.jFloatable', turnOn);

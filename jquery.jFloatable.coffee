@@ -10,6 +10,7 @@ $.Jfloatable = (el, options) ->
   #acess to jQuery and DOM versions of element.
   base.$el = $(el)
   base.el = el;
+  base.$parentRelative = base.$el.parents(options.parentRelativeSelector).first()
 
   #add a reverse reference to the DOM object.
   base.$el.data("jFloatable", base)
@@ -44,7 +45,8 @@ $.Jfloatable = (el, options) ->
   setAbsolute = (limit)->
     cssBase = 
       position: 'absolute'
-      top: limit - originalData.offset.top
+      top: (limit - base.$parentRelative.offset().top) + base.options.top
+
     css = $.extend({}, cssBase, base.options.absoluteCss);
 
     target.css(css)
@@ -52,9 +54,9 @@ $.Jfloatable = (el, options) ->
   getLimit = ->
     # if limit was setted
     if base.options.limit > 0
-      base.options.limit - target.outerHeight()
+      base.options.limit - target.outerHeight() - base.options.top
     else
-      $(document).outerHeight() - target.outerHeight()
+      $(document).outerHeight() - target.outerHeight() - base.options.top
 
 
   windowScroll = ->
@@ -141,6 +143,7 @@ $.Jfloatable = (el, options) ->
 $.Jfloatable.defaultOptions = 
   limit: 0
   top: 0
+  parentRelativeSelector: ".jFloatable-relative" 
   fixedCss: {}
   absoluteCss: {}
 

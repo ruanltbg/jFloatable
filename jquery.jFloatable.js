@@ -10,6 +10,7 @@
     base = this;
     base.$el = $(el);
     base.el = el;
+    base.$parentRelative = base.$el.parents(options.parentRelativeSelector).first();
     base.$el.data("jFloatable", base);
     target = base.$el;
     maxTop = null;
@@ -44,16 +45,16 @@
 
       cssBase = {
         position: 'absolute',
-        top: limit - originalData.offset.top
+        top: (limit - base.$parentRelative.offset().top) + base.options.top
       };
       css = $.extend({}, cssBase, base.options.absoluteCss);
       return target.css(css);
     };
     getLimit = function() {
       if (base.options.limit > 0) {
-        return base.options.limit - target.outerHeight();
+        return base.options.limit - target.outerHeight() - base.options.top;
       } else {
-        return $(document).outerHeight() - target.outerHeight();
+        return $(document).outerHeight() - target.outerHeight() - base.options.top;
       }
     };
     windowScroll = function() {
@@ -129,6 +130,7 @@
   $.Jfloatable.defaultOptions = {
     limit: 0,
     top: 0,
+    parentRelativeSelector: ".jFloatable-relative",
     fixedCss: {},
     absoluteCss: {}
   };

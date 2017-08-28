@@ -15,16 +15,14 @@ $.Jfloatable = (el, options) ->
   #add a reverse reference to the DOM object.
   base.$el.data("jFloatable", base)
 
-
   # properties
   target = base.$el
   maxTop = null
   originalData =
     offset: null
     style: null
-  
-  base.isActive = true
 
+  base.isActive = true
 
   getScrollTop = ->
     ( if (window.pageYOffset != undefined) then window.pageYOffset else document.documentElement.scrollTop )
@@ -33,8 +31,7 @@ $.Jfloatable = (el, options) ->
     target.offset().top - parseFloat(target.css('marginTop').replace(/auto/, 0)) - base.options.top
 
   setFix = ()->
-
-    cssBase = 
+    cssBase =
       position: 'fixed'
       top: base.options.top
       left: originalData.offset.left
@@ -43,7 +40,7 @@ $.Jfloatable = (el, options) ->
     target.css(css)
 
   setAbsolute = (limit)->
-    cssBase = 
+    cssBase =
       position: 'absolute'
       top: (limit - base.$parentRelative.offset().top) + base.options.top
 
@@ -69,7 +66,7 @@ $.Jfloatable = (el, options) ->
     # maxTop is the targetOriginalTop
     if windowScrollTop >= maxTop
       if windowScrollTop < limit
-        if !target.hasClass("jFloatable-fixed") 
+        if !target.hasClass("jFloatable-fixed")
           # add the fixed class and remove the style created by the scrolling
           # it detach the target from the screen
           target.removeClass("jFloatable-absolute").addClass("jFloatable-fixed").removeAttr("style");
@@ -95,17 +92,15 @@ $.Jfloatable = (el, options) ->
     if target.is(":visible") and base.isActive
       windowScroll();
 
-  turnOn = (e) -> 
+  turnOn = (e) ->
     e.preventDefault()
     e.stopPropagation()
-    #console.log e
     base.isActive = true
     reset()
 
   turnOff = (e) ->
     e.preventDefault()
     e.stopPropagation()
-    #console.log e
     base.isActive = false
     setInitialPosition()
 
@@ -140,13 +135,13 @@ $.Jfloatable = (el, options) ->
 
 # the default options
 
-$.Jfloatable.defaultOptions = 
+$.Jfloatable.defaultOptions =
   limit: 0
   top: 0
-  parentRelativeSelector: ".jFloatable-relative" 
+  parentRelativeSelector: ".jFloatable-relative"
   fixedCss: {}
   absoluteCss: {}
 
 $.fn.jFloatable = (options) ->
-  this.each -> 
+  this.each ->
     new $.Jfloatable(this, options)
